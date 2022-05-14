@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './components/app/app';
 
-const root = document.getElementById('root');
-if (!root) {
-  throw new Error('Failed to find the root element');
-}
+// const root = document.getElementById('root');
+// if (!root) {
+//   throw new Error('Failed to find the root element');
+// }
 
-ReactDOM.createRoot(root!).render(
+ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
+  document.getElementById('root'),
 );

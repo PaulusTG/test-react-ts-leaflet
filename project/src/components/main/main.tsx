@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 // import contactsMap from 'assets/img/contacts-map.jpg';
-import './style.css';
-import 'leaflet/dist/leaflet.css';
+// import './style.css';
+// import 'leaflet/dist/leaflet.css';
 import Map from '../map/map';
 import { Address } from '../../constants';
 
