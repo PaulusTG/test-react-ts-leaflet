@@ -1,15 +1,15 @@
-/* eslint-disable no-console */
-import { Icon, Marker } from 'leaflet';
+import { Icon, LeafletMouseEvent, Marker } from 'leaflet';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 import { MapStyle } from '../../constants';
-import { Location } from '../../types/data';
-// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Location, Point } from '../../types/data';
+import { useAppDispatch } from '../../hooks';
+import { setLocation } from '../../store/actions';
 
 type MapProps = {
   center: Location;
-  points: Location[];
+  points: Point[];
 };
 
 const defaultCustomIcon = new Icon({
@@ -21,40 +21,38 @@ const defaultCustomIcon = new Icon({
 function Map({ center, points }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, center);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const handleMapClick = (evt: LeafletMouseEvent) => {
+      const newLocation = {
+        Latitude: evt.latlng.lat,
+        Longitude: evt.latlng.lng,
+        Zoom: center.Zoom,
+      };
+      dispatch(setLocation(newLocation));
+    };
+
     if (map) {
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.Latitude,
-          lng: point.Longitude,
+          lat: point.Location.Latitude,
+          lng: point.Location.Longitude,
         });
 
         marker
           .setIcon(defaultCustomIcon)
+          .bindPopup(`<p><b>Название: </b>${point.Title}</p>
+          <b>Описание: </b><p>${point.Description}</p>
+          <b>Дата/время создания: </b><p>${new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' }).format(new Date(point.DateTime))}</p>
+          <b>Координаты: </b><p>${point.Location.Latitude},${point.Location.Longitude}</p>`)
           .addTo(map);
       });
-
+      map.on('click', handleMapClick);
     }
-  }, [map, points]);
-  console.log(map, mapRef);
-  return <div data-testid="map" style={{ height: `${MapStyle.Height}px`, width: `${MapStyle.Width}px` }} ref={mapRef}></div>;
-}
+  }, [center.Zoom, dispatch, map, points]);
 
-// function Map({ center, points }: MapProps): JSX.Element {
-//   return (
-//     <MapContainer center={[center.Latitude, center.Longitude]} zoom={center.Zoom} scrollWheelZoom={false}>
-//       <TileLayer
-//         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-//         url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-//       />
-//       <Marker position={[points[0].Latitude, points[0].Longitude]}>
-//         <Popup>
-//           Test
-//         </Popup>
-//       </Marker>
-//     </MapContainer>
-//   );
-// }
+  return <div data-testid="map" style={{ height: `${MapStyle.Height}px`, width: `${MapStyle.Width}px`, marginTop: `${MapStyle.Margin}px` }} ref={mapRef}></div>;
+}
 
 export default Map;

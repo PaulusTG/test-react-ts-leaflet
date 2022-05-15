@@ -1,0 +1,35 @@
+.header h1 {
+  margin-left: 250px;
+}
+
+.header p {
+  font-size: 20px;
+  margin-left: 120px;
+}
+
+.links-section {
+  margin-left: 240px;
+}
+
+.link-button {
+  font-size: larger;
+  color: rgb(4, 0, 58);
+  padding: 5px;
+}
+
+.link-button:not(:last-of-type) {
+  border-right: 0.5px solid rgb(0, 11, 48);
+}
+
+.link-button:hover {
+  background-color: rgb(230, 247, 255);
+}
+
+.visually-hidden {
+  visibility: hidden;
+}
+
+.map-container {
+  position: relative;
+  display: flex;
+}

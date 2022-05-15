@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import { Map, TileLayer } from 'leaflet';
 import { MutableRefObject, useEffect, useState } from 'react';
+import { LAYER_ATTRIBUTION, LAYER_URL } from '../constants';
 import { Location } from '../types/data';
 
 function useMap(
@@ -20,10 +20,10 @@ function useMap(
       });
 
       const layer = new TileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        LAYER_URL,
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            LAYER_ATTRIBUTION,
         },
       );
       instance.addLayer(layer);
