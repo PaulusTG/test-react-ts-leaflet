@@ -53,10 +53,11 @@ function NewPointForm({ isVisible }: NewPointFormProps): JSX.Element {
     evt.preventDefault();
     const { Title, Location, Description } = formData;
     const latLng = Location.split(',', 2);
+    const newId = points[points.length - 1].Id + 1;
     prevPointsCount = points.length;
 
     dispatch(addPoint({
-      Id: points.length + 1,
+      Id: newId,
       Title,
       Description,
       DateTime: new Date(),
@@ -82,7 +83,7 @@ function NewPointForm({ isVisible }: NewPointFormProps): JSX.Element {
         method='post'
         onSubmit={handleFormSubmit}
       >
-        <fieldset className='form-group' style={{ width: '500px', marginLeft: '30px' }}>
+        <fieldset className='form-group' style={{ width: '500px', marginLeft: 'auto', marginRight: 'auto' }}>
           <div className='form-group mx-sm-3 mb-2'>
             <div>
               <label htmlFor='title'>Название: </label>
